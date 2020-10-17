@@ -1,0 +1,5 @@
+body {
+    background-color: #ffff99;
+        height: 100%;
+        background-image: repeating-linear-gradient(#ffff99 0px, #ffff99 24px, teal 25px);
+};
