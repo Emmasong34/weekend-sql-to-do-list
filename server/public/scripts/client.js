@@ -6,6 +6,7 @@ function onReady(){
     console.log('hello from jq');
     getTasks();
     $('#submitTask').on('click', addToList);
+    $('#list').on('click', '.taskCompleted', updateTaskList);
 }
 
 //takes inputs from dom and sends them to server
@@ -40,7 +41,7 @@ function addToList(){
  };
 
  //appends list to dom
- function appendToDom(){
+ function appendToDom(array){
      console.log('in appendToDom');
      //empties so the list doesn't double
      $('#newTask').empty();
@@ -60,6 +61,23 @@ function addToList(){
          `);
      };
  };
+
+function updateTaskList(){
+    let taskListId = $(this).closest('li').data('id');
+    console.log(taskListId);
+    $.ajax({
+        method: 'PUT',
+        url: `/taskList/completed/${taskListId}`,
+        data: {completed: true}
+    }).then(function(response){
+        console.log(response);
+        getTasks();
+        //get request
+    }).catch(function(error){
+        console.log(error);
+    });
+};
+
 
 
 
