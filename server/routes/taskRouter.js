@@ -29,17 +29,18 @@ router.get('/', (req, res) => {
     });
 });
 
-router.put('/completed/:idParam', (req, res) => {
+router.put('/completed/:id', (req, res) => {
     //let taskListId = req.params.id;
+    
     console.log('in put request', req.body.completedYet, req.params.id);
     //create SQL query
     let queryText = '';
     if(req.body.completedYet === "true"){
-        queryText = `UPDATE "taskList" SET "completed" = "true" WHERE "id" = ${req.params.id};`;
+        queryText = `UPDATE "taskList" SET "completed" = 'true' WHERE "id" = ($1);`;
     } else {
-        queryText = `Not completed yet`
+        queryText = `UPDATE "taskList" SET "completed" = 'false' WHERE "id" = ($1);`
     }
-    pool.query(queryText).then((result) => {
+    pool.query(queryText, [req.params.id]).then((result) => {
         console.log('result from put', result);
         res.sendStatus(200);
      }).catch((error) => {
@@ -67,7 +68,7 @@ router.put('/completed/:idParam', (req, res) => {
 
 router.delete('/:id', (req, res) =>{
     let taskListId = req.params.id;
-    let queryText = `DELETE FROM "taskList" WHERE "id = $1;`;
+    let queryText = `DELETE FROM "taskList" WHERE "id" = $1;`;
     pool.query(queryText, [taskListId]).then((result) => {
         console.log(result);
         res.sendStatus(200);

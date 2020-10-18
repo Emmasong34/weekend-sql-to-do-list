@@ -6,8 +6,8 @@ function onReady(){
     console.log('hello from jq');
     getTasks();
     $('#submitTask').on('click', addToList);
-    $('#list').on('click', '.deleteTask', deleteTask)
     $('#list').on('click', '.taskCompleted', updateTaskList);
+    $('#list').on('click', '.delete', deleteTask)
 }
 
 //takes inputs from dom and sends them to server
@@ -27,21 +27,6 @@ function addToList(){
         });
     };
 
-
-//gets tasks from server
-//  function getTasks(){
-//      console.log('in getTasks');
-//      $.ajax({
-//          method: 'GET',
-//          url: '/taskList'
-//      }).then(function(response){
-//          appendToDom(response);
-//      }).catch(function(error){
-//          console.log(error);
-//      });
-//  };
-
-
  function getTasks() {
     $('#list').empty();
     $.ajax({
@@ -53,7 +38,7 @@ function addToList(){
         for (let i = 0; i < response.length; i++) {
             $('#list').append(`
                 <ul>
-                    <li${response[i].id}>
+                    <li data-id=${response[i].id}>
                         ${response[i].task}
                         <button class ="taskCompleted">finished</button>
                         <button class="delete">remove</button>
@@ -62,45 +47,10 @@ function addToList(){
     });
 }
 
-
-
-
-
- //appends list to dom
-//  function appendToDom(array){
-//      console.log('in appendToDom');
-//      //empties so the list doesn't double
-//      $('#list').empty();
-//      console.log('array', array);
-//      for(let i=0; i < array.length; i++){
-//          let element = '';
-//          if(array[i].completed === true){
-//              element = 'Task completed';
-//          } else {
-//              element = '<button class ="taskCompleted">finished</button>'
-//          }
-//          $('#list').append(`
-//          <li data-id=${array[i].id}>
-//             ${array[i].task} <span>${element}</span> 
-//             <button class="delete">remove</button>
-//          </li>
-//          `);
-//      };
-//  };
-
- 
-
-
-
-
-
-
-
-
  //updates database 
 function updateTaskList(){
     let taskListId = $(this).closest('li').data('id');
-    console.log('in updateTaskList function');//this was the old console.log taskListId
+    console.log('in updateTaskList function', taskListId);
     $.ajax({
         method: 'PUT',
         url: `/taskList/completed/${taskListId}`,
