@@ -29,11 +29,13 @@ router.get('/', (req, res) => {
     });
 });
 
+
+//updating the database 
 router.put('/completed/:id', (req, res) => {
     let taskListId = req.params.id;
     let completed = req.body.completed;
     let queryText = `UPDATE "taskList" SET "completed" = $1 WHERE "id" = $2;`;
-    pool.query(queryText, [taskListId, completed]).then((result) => {
+    pool.query(queryText, [completed, taskListId]).then((result) => {
         console.log(result);
         res.sendStatus(200);
     }).catch((error) => {
@@ -41,6 +43,19 @@ router.put('/completed/:id', (req, res) => {
         res.sendStatus(500);
     });
 });
+
+router.delete('/:id', (req, res) =>{
+    let taskListId = req.params.id;
+    let queryText = `DELETE FROM "taskList" WHERE "id = $1;`;
+    pool.query(queryText, [taskListId]).then((result) => {
+        console.log(result);
+        res.sendStatus(200);
+    }).catch((error) => {
+        console.log('error in delete', error);
+        res.sendStatus(500);
+    });
+});
+
 
 
 module.exports = router;

@@ -6,19 +6,20 @@ function onReady(){
     console.log('hello from jq');
     getTasks();
     $('#submitTask').on('click', addToList);
+    $('#list').on('click', '.deleteTask', deleteTask)
     $('#list').on('click', '.taskCompleted', updateTaskList);
 }
 
 //takes inputs from dom and sends them to server
 function addToList(){
     console.log('in add to list');
-    let newTask = $('#newTask').val()
+    let newTask = $('#taskInput').val()
         $.ajax({
             type: 'POST',
             url: '/taskList',
             data: newTask
         }).then(function (response){
-            $('#newTask').val('');
+            $('#taskInput').val('');
             ///get request will go here
             getTasks();
         }).catch(function(error) {
@@ -44,7 +45,7 @@ function addToList(){
  function appendToDom(array){
      console.log('in appendToDom');
      //empties so the list doesn't double
-     $('#newTask').empty();
+     $('#taskInput').empty();
      console.log('array', array);
      for(let i=0; i < array.length; i++){
          let element = '';
@@ -55,13 +56,14 @@ function addToList(){
          }
          $('#list').append(`
          <li data-id=${array[i].id}>
-            <p>${array[i].task}: <span>${element}</span> <p>
+            ${array[i].task}: <span>${element}</span> 
             <button class="delete">delete</button>
          </li>
          `);
      };
  };
 
+ //updates database 
 function updateTaskList(){
     let taskListId = $(this).closest('li').data('id');
     console.log(taskListId);
@@ -77,6 +79,22 @@ function updateTaskList(){
         console.log(error);
     });
 };
+
+
+function deleteTask(){
+    let taskListId = $(this).closest('li').data('id');
+    console.log(taskListId);
+    $.ajax({
+        method: 'DELETE',
+        url: `/taskList/${taskListId}`
+    }).then(function(response){
+        console.log(response);
+        getTasks();
+    }).catch(function(error){
+        console.log(error);
+    });
+};
+
 
 
 
