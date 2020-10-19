@@ -7,7 +7,8 @@ function onReady(){
     getTasks();
     $('#submitTask').on('click', addToList);
     $('#list').on('click', '.taskCompleted', updateTaskList);
-    $('#list').on('click', '.delete', deleteTask)
+    $('#list').on('click', '.taskCompleted', changeColor);
+    $('#list').on('click', '.delete', deleteTask);
 }
 
 //takes inputs from dom and sends them to server
@@ -38,16 +39,18 @@ function addToList(){
         for (let i = 0; i < response.length; i++) {
             $('#list').append(`
                 <ul>
-                    <li data-id=${response[i].id}>
+                    <li id="listId" data-id=${response[i].id}>
                         ${response[i].task}
                         <button class ="taskCompleted">finished</button>
                         <button class="delete">remove</button>
+                    </li>
+                </ul>         
             `);
         }
     });
 }
 
- //updates database 
+ //sends update to database 
 function updateTaskList(){
     let taskListId = $(this).closest('li').data('id');
     console.log('in updateTaskList function', taskListId);
@@ -63,6 +66,11 @@ function updateTaskList(){
         console.log(error);
     });
 };
+
+function changeColor(){
+    console.log('in change color function');
+    $(this).addClass('changeBackground');
+}
 
 
 function deleteTask(){
