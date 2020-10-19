@@ -29,9 +29,9 @@ router.get('/', (req, res) => {
     });
 });
 
+
+//updates database with information from the dom
 router.put('/completed/:id', (req, res) => {
-    //let taskListId = req.params.id;
-    
     console.log('in put request', req.body.completedYet, req.params.id);
     //create SQL query
     let queryText = '';
@@ -50,22 +50,7 @@ router.put('/completed/:id', (req, res) => {
 });
 
 
-
-
-//updating the database 
-// router.put('/completed/:id', (req, res) => {
-//     let taskListId = req.params.id;
-//     let completed = req.body.completedYet;
-//     let queryText = `UPDATE "taskList" SET "completed" = $1 WHERE "id" = $2;`;
-//     pool.query(queryText, [completed, taskListId]).then((result) => {
-//         console.log(result);
-//         res.sendStatus(200);
-//     }).catch((error) => {
-//         console.log('error in put', error);
-//         res.sendStatus(500);
-//     });
-// });
-
+//deletes from database
 router.delete('/:id', (req, res) =>{
     let taskListId = req.params.id;
     let queryText = `DELETE FROM "taskList" WHERE "id" = $1;`;

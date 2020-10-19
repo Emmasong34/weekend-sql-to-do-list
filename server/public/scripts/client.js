@@ -7,7 +7,7 @@ function onReady(){
     getTasks();
     $('#submitTask').on('click', addToList);
     $('#list').on('click', '.taskCompleted', updateTaskList);
-    $('#list').on('click', '.taskCompleted', changeColor);
+    $('#list').on('click', '.taskCompleted', changeText);
     $('#list').on('click', '.delete', deleteTask);
 }
 
@@ -39,11 +39,13 @@ function addToList(){
         for (let i = 0; i < response.length; i++) {
             $('#list').append(`
                 <ul>
-                    <li id="listId" data-id=${response[i].id}>
+                <div class= "newDiv">
+                    <li data-id=${response[i].id}>
                         ${response[i].task}
                         <button class ="taskCompleted">finished</button>
                         <button class="delete">remove</button>
                     </li>
+                    </div>
                 </ul>         
             `);
         }
@@ -67,9 +69,13 @@ function updateTaskList(){
     });
 };
 
-function changeColor(){
+
+//this is where the same click event that fires off the updateTaskList function
+//also fires off the changeText function that will mark a line through the text
+//as if crossing off a to-do list in person
+function changeText(){
     console.log('in change color function');
-    $(this).addClass('changeBackground');
+    $(this).closest('li').addClass('changeText');
 }
 
 

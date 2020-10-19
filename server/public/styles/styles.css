@@ -9,9 +9,8 @@ body {
         background-image: repeating-linear-gradient(#ffff99 0px, #ffff99 24px, teal 25px);
 };
 
-.changeBackground{
-    background-color: green;
-    font-style: bold;
+.changeText{
+    text-decoration: line-through;
 }
   
   /*styling red vertical line */
