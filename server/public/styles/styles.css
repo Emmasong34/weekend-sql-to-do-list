@@ -1,5 +1,3 @@
-
-
 body {
     margin: 50px;
     font-family: didot, serif;
@@ -9,7 +7,9 @@ body {
         background-image: repeating-linear-gradient(#ffff99 0px, #ffff99 24px, teal 25px);
 };
 
-.changeText{
+
+
+#changeText{
     text-decoration: line-through;
 }
   

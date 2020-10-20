@@ -7,7 +7,7 @@ function onReady(){
     getTasks();
     $('#submitTask').on('click', addToList);
     $('#list').on('click', '.taskCompleted', updateTaskList);
-    $('#list').on('click', '.taskCompleted', changeText);
+    //$('#list').on('click', '.taskCompleted', changeText);
     $('#list').on('click', '.delete', deleteTask);
 }
 
@@ -29,28 +29,40 @@ function addToList(){
     };
 
  function getTasks() {
-    $('#list').empty();
+    // $('#list').empty();
     $.ajax({
         type: 'GET',
         url: '/taskList'
     }).then(function (response) {
         console.log("in new get", response);
         // append data to the DOM
+        $('#list').empty();
         for (let i = 0; i < response.length; i++) {
-            $('#list').append(`
-                <ul>
-                <div class= "newDiv">
-                    <li data-id=${response[i].id}>
+            //for(let task of response){
+                //let cssClass;
+                if (response[i].completed === false){
+                    //cssClass = 'complete';
+                    $('#list').append(`
+                <li   data-id=${response[i].id}>
                         ${response[i].task}
-                        <button class ="taskCompleted">finished</button>
+                        <button class ="taskCompleted" >finished</button>
                         <button class="delete">remove</button>
-                    </li>
-                    </div>
-                </ul>         
-            `);
+                    </li>           
+            `);   
+                }
+                else if (response[i].completed === true){
+                    //cssClass = 'incomplete';
+                    $('#list').append(`
+                <li  class="changeText" data-id=${response[i].id}>
+                        ${response[i].task}
+                        <button class="delete">remove</button>
+                    </li> 
+                    `);          
+                };
         }
-    });
-}
+                   
+    
+    })}
 
  //sends update to database 
 function updateTaskList(){
@@ -73,10 +85,10 @@ function updateTaskList(){
 //this is where the same click event that fires off the updateTaskList function
 //also fires off the changeText function that will mark a line through the text
 //as if crossing off a to-do list in person
-function changeText(){
-    console.log('in change color function');
-    $(this).closest('li').addClass('changeText');
-}
+// function changeText(){
+//     console.log('in change color function');
+//     $(this).closest('li').data('id').addClass('changeText');
+// }
 
 
 function deleteTask(){
@@ -94,11 +106,7 @@ function deleteTask(){
 };
 
 
+    
 
 
-
-
-
-     
-  
-  
+ 
